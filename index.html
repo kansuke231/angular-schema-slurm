@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Custom validators, async validators etc</title>
+    <title>Test</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
   </head>
-  <body ng-app="test" class="container" ng-controller="TestCtrl">
+  <body ng-app="test" class="container">
 
   <h3>Slurm Form Validation</h3>
-  <form name="theForm">
+  <form name="theForm" ng-controller="TestCtrl">
+  <input type="text" ng-model="selected"
+         ng-keypress="onEnter($event)"
+         uib-typeahead="option for option in options" >
+
     <div sf-schema="schema" sf-form="form" sf-model="model"
        sf-options="{destroyStrategy:'remove'}"></div>
     <div>
@@ -17,6 +21,7 @@
     </div>
     <div>{{prettyModel}}</div>
   </form>
+  </body>
 
   <script type="text/javascript" src="bower_components/tv4/tv4.js"></script>
   <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
@@ -26,7 +31,7 @@
 
   <script type="text/javascript" src="bower_components/angular-schema-form/dist/schema-form.js"></script>
   <script type="text/javascript" src="bower_components/angular-schema-form/dist/bootstrap-decorator.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script type="text/javascript" src="form-validation.js"></script>
 
-  </body>
 </html>

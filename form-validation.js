@@ -1,4 +1,4 @@
-angular.module('test', ['schemaForm']).controller('TestCtrl', function($scope, $q, $timeout) {
+angular.module('test', ['schemaForm','ui.bootstrap']).controller('TestCtrl', function($scope) {
   $scope.schema = {
       "type": "object",
       "title": "SlurmConfig",
@@ -144,10 +144,14 @@ angular.module('test', ['schemaForm']).controller('TestCtrl', function($scope, $
       }
     };
     $scope.form = [
-      "array",
+      {
+        "key": "array",
+        "condition": "model.check.array",
+        "required": true
+      },
       "account",
-      "begin",
-      "checkpoint",
+      "begin"
+  /*   "checkpoint",
       "checkpoint-dir",
       "cpu-per-task",
       "workdir",
@@ -172,11 +176,81 @@ angular.module('test', ['schemaForm']).controller('TestCtrl', function($scope, $
       "qos",
       "requeue",
       "time"
+*/
     ];
-    $scope.model = {};
+    var check = {
+    'array':false,
+    'account':false,
+    'begin':false,
+    'checkpoint':false,
+    'checkpoint-dir':false,
+    'cpu-per-task':false,
+    'workdir':false,
+    'error':false,
+    'export':false,
+    'export-file':false,
+    'nodefile':false,
+    'get-user-env':false,
+    'immediate':false,
+    'input':false,
+    'job-name':false,
+    'jobid':false,
+    'no-kill':false,
+    'licenses':false,
+    'mail-type':false,
+    'mail-user':false,
+    'mem':false,
+    'mem-per-cpu':false,
+    'nodes':false,
+    'no-requeue':false,
+    'output':false,
+    'qos':false,
+    'requeue':false,
+    'time':false
+  };
+    $scope.model = {check:check};
+    $scope.options = Object.keys($scope.model.check);
+    console.log($scope.options);
     $scope.$watch('model', function(value){
       if (value) {
         $scope.prettyModel = JSON.stringify(value, undefined, 2);
       }
     }, true);
+
+    $scope.onEnter = function($event) {
+    if ($event.which===13){
+        $scope.model.check[$scope.selected] = true;
+        $scope.selected = "";
+    }
+  };
+})
+.directive('typeaheadFocus', function (){
+  return {
+    require: 'ngModel',
+    link: function (scope,element,attr,ngModel){
+      element.bind('click', function () {
+        var viewValue = ngModel.$viewValue;
+
+        if (ngModel.$viewValue == ' '){
+          ngModel.$setViewValue(null);
+        }
+        ngModel.$setViewValue(' ');
+        ngModel.$setViewValue(viewValue || ' ');
+      });
+
+      element.bind('keyup', function(event){
+        if (event.which === 8){ // when backspace is released
+          if (ngModel.$viewValue.length < 1 && ngModel.$viewValue === ''){
+            ngModel.$setViewValue(' ');
+          }
+        }
+      });
+
+      scope.emptyOrMatch = function (actual,expected){
+        if (expected == ' ') return true;
+        return actual.indexOf(expected) > -1;
+      };
+    }
+
+  };
 });
