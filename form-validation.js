@@ -1,4 +1,22 @@
-angular.module('test', ['schemaForm','ui.bootstrap']).controller('TestCtrl', function($scope) {
+angular.module('test', ['schemaForm','ui.bootstrap'])
+
+.config(['schemaFormProvider', 'schemaFormDecoratorsProvider', 'sfPathProvider',
+  function(schemaFormProvider,  schemaFormDecoratorsProvider, sfPathProvider) {
+
+    //Add to the bootstrap directive
+    schemaFormDecoratorsProvider.addMapping(
+      'bootstrapDecorator',
+      'custom_input',
+      'custom_input.html'
+    );
+    schemaFormDecoratorsProvider.createDirective(
+      'custom_input',
+      'custom_input.html'
+    );
+  }
+])
+
+.controller('TestCtrl', function($scope) {
   $scope.schema = {
       "type": "object",
       "title": "SlurmConfig",
@@ -146,7 +164,10 @@ angular.module('test', ['schemaForm','ui.bootstrap']).controller('TestCtrl', fun
     $scope.form = [
       {
         "key": "array",
+        "type":"custom_input",
         "condition": "model.check.array",
+        "popover":"Anta Bakaa?",
+        "delete": function (key){$scope.model.check[key] = false;},
         "required": true
       },
       "account",
@@ -223,6 +244,8 @@ angular.module('test', ['schemaForm','ui.bootstrap']).controller('TestCtrl', fun
         $scope.selected = "";
     }
   };
+
+
 })
 .directive('typeaheadFocus', function (){
   return {
