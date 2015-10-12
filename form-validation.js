@@ -13,6 +13,16 @@ angular.module('test', ['schemaForm','ui.bootstrap'])
       'custom_input',
       'custom_input.html'
     );
+
+    schemaFormDecoratorsProvider.addMapping(
+      'bootstrapDecorator',
+      'custom_checkbox',
+      'custom_checkbox.html'
+    );
+    schemaFormDecoratorsProvider.createDirective(
+      'custom_checkbox',
+      'custom_checkbox.html'
+    );
   }
 ])
 
@@ -170,9 +180,18 @@ angular.module('test', ['schemaForm','ui.bootstrap'])
         "delete": function (key){$scope.model.check[key] = false;},
         "required": true
       },
-      "account",
-      "begin"
-  /*   "checkpoint",
+      {
+        "key": 'immediate',
+        "type":"custom_checkbox",
+        "condition": "model.check.immediate",
+        "popover":"Anta Bakaa?",
+        "delete": function (key){$scope.model.check[key] = false;},
+        "required": true
+      }
+
+  /*  "account",
+      "begin",
+      "checkpoint",
       "checkpoint-dir",
       "cpu-per-task",
       "workdir",
